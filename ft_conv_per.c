@@ -1,80 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_conv_c.c                                        :+:      :+:    :+:   */
+/*   ft_conv_per.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrenaudi <vrenaudi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/28 15:58:16 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/27 17:56:32 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/09/26 12:46:34 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static char	*ft_conv_bzer(t_fmt para, int *cpt)
-{
-	int		len;
-	int		i;
-	char	*str;
-
-	len = 1;
-	i = 0;
-	str = NULL;
-	if (para.width > 1)
-		len = para.width;
-	if ((str = ft_memalloc(len + 1)) == 0)
-		return (NULL);
-	if (para.options && ft_strchr(para.options, '-'))
-	{
-		str[0] = '\0';
-		(*cpt)++;
-		i++;
-		while (1 < len--)
-		{
-			str[i++] = ' ';
-			(*cpt)++;
-		}
-	}
-	else
-	{
-		while (len-- > 1)
-		{
-			str[i++] = ' ';
-			(*cpt)++;
-		}
-		str[i] = '\0';
-		(*cpt)++;
-	}
-	return (str);
-}
-
-char		*ft_conv_c(va_list ap, t_fmt para, int *cpt)
+char	*ft_conv_per(t_fmt para)
 {
 	char	*arg;
-	int		argu;
 	int		len;
 	int		i;
 
-	argu = va_arg(ap, int);
-	arg = NULL;
-	if (argu == 0)
-	{
-		arg = ft_conv_bzer(para, cpt);
-		return (arg);
-	}
 	len = 1;
 	if (para.width > 0)
 		len = para.width;
 	if ((arg = ft_memalloc(len + 1)) == 0)
 		return (NULL);
+	ft_memset(arg, ' ', len);
 	i = 0;
-	while (i < len)
-		arg[i++] = ' ';
 	if (para.options && ft_strchr(para.options, '-'))
-		arg[0] = argu;
+		arg[0] = '%';
+	else if (para.options && ft_strchr(para.options, '0'))
+	{
+		ft_memset(arg, '0', len);
+		arg[len - 1] = '%';
+	}
 	else
-		arg[len - 1] = argu;
-	(*cpt) = len;
+		arg[len - 1] = '%';
 	return (arg);
 }

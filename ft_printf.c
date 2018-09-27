@@ -6,126 +6,115 @@
 /*   By: vrenaudi <vrenaudi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 15:40:28 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/06/28 17:16:52 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/09/27 18:16:14 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
-int		ft_print(const char *format, t_fmt *para, char **args, int nb)
+
+/*static char	*ft_get_conv2(va_list ap, t_fmt *arg)
 {
 	char	*str;
-	char	*tmp;
-	int		size[4];
-	int		i;
-	int		a;
-	int		c;
-	int		d;
+	//if (arg->conv == 'S')
+	//	cpt = ft_conv_wstr(ap, *arg);
+	if (arg->conv == 'C')
+		str = ft_conv_wc(ap, *arg);
+	if (arg->conv == 'c' && arg->size && ft_strchr(arg->size, 'l'))
+		str = ft_conv_wc(ap, *arg);
+	return (str);
+}*/
 
-	i = 0;
-	a = 0;
-	c = 0;
-	size[0] = 0;
-	size[1] = 0;
-	size[2] = 0;
-	size[3] = 0;
-	size[0] = ft_strlen(format);
-	while (i < nb)
-	{
-		size[1] = size[1] + para[i].len;
-		i++;
-	}
-	i = 0;
-	while (i < nb)
-	{
-		size[2] = size[2] + ft_strlen(args[i]);
-		i++;
-	}
-	size[3] = size[0] - size[1] + size[2];
-	if ((str = ft_memalloc(size[3] + 1)) == 0)
-		return (0);
-	i = 0;
-	while (format[i])
-	{
-		if (format[i] == '%')
-		{
-			d = 0;
-			tmp = args[a];
-			while (tmp[d])
-			{
-				str[c] = tmp[d];
-				c++;
-				d++;
-			}
-			i = i + para[a].len;
-			a++;
-		}
-		if (format[i])
-		{
-			str[c] = format[i];
-			c++;
-			i++;
-		}
-	}
-	ft_putstr(str);
-	return (ft_strlen(str));
-}
-
-char	*ft_get_conv(va_list ap, t_fmt arg)
+static char	*ft_get_conv(va_list ap, t_fmt *arg, int *cpt)
 {
 	char	*str;
 
-	if (arg.conv == 'd' || arg.conv == 'i')
-		str = ft_conv_int(ap, arg);
-	if (arg.conv == 's')
-		str = ft_conv_str(ap, arg);
-	if (arg.conv == 'c')
-		str = ft_conv_c(ap, arg);
-	if (arg.conv == 'u')
-		str = ft_conv_u(ap, arg);
-	if (arg.conv == 'o')
-		str = ft_conv_o(ap, arg);
-	if (arg.conv == 'x' || arg.conv == 'X')
-		str = ft_conv_h(ap, arg);
-	if (arg.conv == 'p')
+	str = NULL;
+	if (arg->conv == 'D' || arg->conv == 'O' || arg->conv == 'U')
 	{
-		str = ft_conv_p(ap, arg);
-	//	str = ft_memalloc(1);
+		arg->conv = arg->conv + 32;
+		if ((arg->size = ft_memalloc(2)) == 0)
+			return (NULL);
+		arg->size[0] = 'l';
 	}
+	if (arg->conv == 'd' || arg->conv == 'i')
+		str = ft_conv_int(ap, *arg);
+	if (arg->conv == 'u')
+		str = ft_conv_u(ap, *arg);
+	if (arg->conv == 'o')
+		str = ft_conv_o(ap, *arg);
+	if (arg->conv == 'x' || arg->conv == 'X')
+		str = ft_conv_h(ap, *arg);
+	if (arg->conv == 'p')
+		str = ft_conv_p(ap, *arg);
+	if (arg->conv == '%')
+		str = ft_conv_per(*arg);
+	if (arg->conv == 's')
+		str = ft_conv_str(ap, *arg);
+	if (arg->conv == 'c' && ((!arg->size) || (arg->size && !ft_strchr(arg->size, 'l'))))
+		str = ft_conv_c(ap, *arg, cpt);
+	if (arg->conv == 'C')
+		if ((str = ft_conv_wc(ap, *arg, cpt)) == 0)
+			return (NULL);
+	if (arg->conv == 'c' && arg->size && ft_strchr(arg->size, 'l'))
+		if ((str = ft_conv_wc(ap, *arg, cpt)) == 0)
+			return (NULL);
 	return (str);
 }
 
-int		ft_printf(const char *format, ...)
+int			ft_printf(const char *format, ...)
 {
 	va_list	ap;
 	int		i;
-	int		a;
-	int		n;
-	t_fmt	*arg;
-	char	**top;
+	int		cpt;
+	int		cpt2;
+	t_fmt	arg;
+	char	*top;
+	char	*tmp;
+	char	*tmp2;
 
-	a = 0;
-	i = 0;
-	if ((n = ft_get_arg_nb(format)) == 0)
+	top = NULL;
+	cpt2 = 0;
+	if ((i = ft_get_arg_nb(format)) == 0)
 		return (ft_only_fmt(format));
-	if ((arg = malloc(sizeof(t_fmt) * n)) == 0)
-		return (-1);
-	if ((top = malloc(sizeof(char*) * (n + 1))) == 0)
-		return (-1);
+	i = 0;
 	va_start(ap, format);
 	while (format[i])
 	{
 		if (format[i] == '%')
 		{
+			cpt = 0;
 			i++;
-			arg[a++] = ft_analyze_arg(format + i);
+			arg = ft_analyze_arg(&format[i]);
+			if ((tmp = ft_get_conv(ap, &arg, &cpt)) == 0)
+			{
+				ft_putmemstr(tmp2, cpt2);
+				return (-1);
+			}
+			if (arg.conv != 'c' && arg.conv != 'C')
+				cpt = ft_strlen(tmp);
+			tmp2 = ft_memdup(top, cpt2);
+			if (top)
+				ft_strdel(&top);
+			top = ft_memjoinfreeall(tmp2, tmp, cpt2, cpt);
+			i += arg.len;
+			cpt2 += cpt;
 		}
-		i++;
+		else
+		{
+			tmp2 = ft_memdup(top, cpt2);
+			if (top)
+				ft_strdel(&top);
+			top = ft_memjoin(tmp2 ,&format[i], cpt2, ft_strlenuntilc(&format[i], '%'));
+			while (format[i] && format[i] != '%')
+			{
+				i++;
+				cpt2++;
+			}
+		}
 	}
-	i = -1;
-	while (++i < a)
-		top[i] = ft_get_conv(ap, arg[i]);
 	va_end(ap);
-	return (ft_print(format, arg, top, a));
+	ft_putmemstr(top, cpt2);
+	ft_strdel(&top);
+	return (cpt2);
 }
