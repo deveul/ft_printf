@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*   ft_power.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrenaudi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vrenaudi <vrenaudi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/05 16:08:43 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/24 16:41:12 by vrenaudi         ###   ########.fr       */
+/*   Created: 2018/09/20 16:37:42 by vrenaudi          #+#    #+#             */
+/*   Updated: 2018/09/20 16:54:17 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_putchar(char c)
+int		ft_power(int nb, int power)
 {
-	write(1, &c, 1);
+	int		save;
+
+	save = nb;
+	if (power == 0)
+		return (1);
+	while (power > 1)
+	{
+		nb = nb * save;
+		power--;
+	}
+	return (nb);
 }

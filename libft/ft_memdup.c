@@ -1,18 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*   ft_memdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrenaudi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/05 16:08:43 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/24 16:41:12 by vrenaudi         ###   ########.fr       */
+/*   Created: 2018/04/12 10:24:38 by vrenaudi          #+#    #+#             */
+/*   Updated: 2018/09/27 11:59:20 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putchar(char c)
+void	*ft_memdup(const void *src, size_t n)
 {
-	write(1, &c, 1);
+	size_t	i;
+	char	*s;
+	char	*d;
+
+	i = 0;
+	s = (char *)src;
+	d = NULL;
+	if ((d = ft_memalloc(n + 1)) == 0)
+		return (NULL);
+	while (i < n)
+	{
+		d[i] = s[i];
+		i++;
+	}
+	return (d);
 }

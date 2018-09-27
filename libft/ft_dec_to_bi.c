@@ -1,40 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dec_to_hex.c                                    :+:      :+:    :+:   */
+/*   ft_dec_to_bi.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrenaudi <vrenaudi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/21 14:45:11 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/07 14:51:25 by vrenaudi         ###   ########.fr       */
+/*   Created: 2018/06/20 12:47:15 by vrenaudi          #+#    #+#             */
+/*   Updated: 2018/09/27 16:54:26 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_dec_to_hex(unsigned long long nb, char c)
+char	*ft_dec_to_bi(unsigned int nb)
 {
-	char				*b;
-	char				*res;
-	unsigned long long	save;
-	unsigned long long	size;
-	int					cpt[2];
+	char			*res;
+	unsigned int	save;
+	unsigned int	size;
+	int				cpt;
+	int				i;
 
-	cpt[0] = 0;
-	cpt[1] = 1;
+	cpt = 1;
 	size = 1;
+	i = 0;
 	save = nb;
-	b = "0123456789abcdef";
-	if (c == 'X')
-		b = "0123456789ABCDEF";
-	while ((nb /= 16) > 0 && cpt[1]++)
-		size = size * 16;
-	if ((res = ft_memalloc((cpt[1] + 1))) == 0)
-		return (NULL);
-	while (cpt[1]-- > 0)
+	while (nb >= 2)
 	{
-		res[cpt[0]++] = b[((save / size) % 16)];
-		size = size / 16;
+		nb = nb / 2;
+		size = size * 2;
+		cpt++;
+	}
+	if ((res = ft_memalloc((cpt + 1))) == 0)
+		return (NULL);
+	while (cpt > 0)
+	{
+		res[i++] = ((save / size) % 2) + 48;
+		size = size / 2;
+		cpt--;
 	}
 	return (res);
 }

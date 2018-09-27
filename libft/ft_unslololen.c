@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*   ft_unslololen.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrenaudi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/05 16:08:43 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/24 16:41:12 by vrenaudi         ###   ########.fr       */
+/*   Created: 2018/04/17 18:17:45 by vrenaudi          #+#    #+#             */
+/*   Updated: 2018/09/06 17:02:17 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_putchar(char c)
+int		ft_unslololen(unsigned long long nb)
 {
-	write(1, &c, 1);
+	int		i;
+
+	i = 1;
+	while (nb > 9)
+	{
+		nb = nb / 10;
+		i++;
+	}
+	return (i);
 }

@@ -6,7 +6,7 @@
 #    By: vrenaudi <urenaudi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/26 14:25:25 by vrenaudi          #+#    #+#              #
-#    Updated: 2018/06/28 13:00:08 by vrenaudi         ###   ########.fr        #
+#    Updated: 2018/09/27 12:00:08 by vrenaudi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,12 @@ SRCS = ./ft_atoi.c ./ft_bzero.c ./ft_isalnum.c ./ft_isalpha.c \
 	  ./ft_swapbits.c ./ft_printbits.c ./ft_reversebits.c ./ft_strcat.c \
 	  ./ft_strchr.c ./ft_strlenuntilc.c ./ft_lstaddlast.c ./ft_strndup.c \
 	  ./ft_lstrmvone.c ./ft_strjoinfree.c ./ft_uns_itoa.c ./ft_unsintlen.c \
-	  ./ft_dec_to_octa.c ./ft_dec_to_hex.c ./ft_uintmax_to_hex.c ./ft_strrpc.c
+	  ./ft_dec_to_octa.c ./ft_dec_to_hex.c ./ft_uintmax_to_hex.c \
+	  ./ft_strrpc.c ./ft_lololen.c ./ft_itoa_ll.c ./ft_unslololen.c \
+	  ./ft_uns_itoa_ll.c ./ft_strjoinfreeall.c ./ft_strjoinfreesec.c \
+	  ft_dec_to_bi.c ft_power.c ft_bi_to_dec.c ft_strrpcall.c ft_putwchar.c \
+	  ft_putwstr.c ft_wstrlen.c ft_charlen.c ft_putwcinstr.c ft_strjoinuntilc.c \
+	  ft_memjoin.c ft_memjoinfreeall.c ft_putmemstr.c ft_memdup.c
 
 OBJ = $(SRCS:.c=.o)
 

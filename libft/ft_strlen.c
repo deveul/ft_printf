@@ -6,13 +6,14 @@
 /*   By: vrenaudi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 15:27:01 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/04/18 11:16:39 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/09/25 11:11:57 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-int		ft_strlen(const char *s)
+size_t		ft_strlen(const char *s)
 {
-	int		i;
+	size_t		i;
 
 	i = 0;
 	while (s[i])

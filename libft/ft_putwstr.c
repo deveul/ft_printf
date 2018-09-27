@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*   ft_putwstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrenaudi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/05 16:08:43 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/24 16:41:12 by vrenaudi         ###   ########.fr       */
+/*   Created: 2018/04/05 16:09:51 by vrenaudi          #+#    #+#             */
+/*   Updated: 2018/09/25 16:04:57 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putchar(char c)
+void	ft_putwstr(wchar_t const *s, int len)
 {
-	write(1, &c, 1);
+	int		i;
+
+	i = 0;
+	if (!s)
+		return ;
+	while (i < len)
+	{
+		ft_putwchar(s[i]);
+		i++;
+	}
 }
