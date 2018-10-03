@@ -6,9 +6,10 @@
 /*   By: vrenaudi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 15:27:01 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/25 11:11:57 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/10/03 19:06:22 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 size_t		ft_strlen(const char *s)

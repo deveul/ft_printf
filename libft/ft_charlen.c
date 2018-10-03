@@ -6,7 +6,7 @@
 /*   By: vrenaudi <vrenaudi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 11:28:30 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/25 11:37:28 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/10/01 19:30:22 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ size_t	ft_charlen(wchar_t wc)
 	unsigned int	len;
 	char			*bi;
 
+	if (MB_CUR_MAX == 1)
+		return (1);
 	nb = (unsigned int)wc;
 	bi = ft_dec_to_bi(nb);
 	len = ft_strlen(bi);

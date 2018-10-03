@@ -1,38 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_conv_per.c                                      :+:      :+:    :+:   */
+/*   ft_conv_error.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrenaudi <vrenaudi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/28 15:58:16 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/10/03 11:16:44 by vrenaudi         ###   ########.fr       */
+/*   Created: 2018/10/02 17:39:47 by vrenaudi          #+#    #+#             */
+/*   Updated: 2018/10/03 18:25:31 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_conv_per(t_fmt para)
+char	*ft_conv_error(t_fmt para)
 {
-	char	*arg;
 	int		len;
-	int		i;
+	int		save;
+	char	*str;
+	char	*tmp;
 
 	len = 1;
-	if (para.width > 0)
+	save = len;
+	if (para.conv == -1)
+		return (ft_strdup(""));
+	if (len < para.width)
 		len = para.width;
-	if ((arg = ft_memalloc(len + 1)) == 0)
+	if (!(str = ft_memalloc(2)))
 		return (NULL);
-	ft_memset(arg, ' ', len);
-	i = 0;
+	str[0] = para.conv;
+	if (!(tmp = ft_memalloc(len)))
+		return (NULL);
+	ft_memset(tmp, ' ', (len - 1));
 	if (para.minus == 1)
-		arg[0] = '%';
-	else if (para.zero == 1)
+		return (ft_strjoinfreeall(str, tmp));
+	if (para.zero == 1)
 	{
-		ft_memset(arg, '0', len);
-		arg[len - 1] = '%';
+		ft_memset(tmp, '0', (len - 1));
+		return (ft_strjoinfreeall(tmp, str));
 	}
-	else
-		arg[len - 1] = '%';
-	return (arg);
+	return (ft_strjoinfreeall(tmp, str));
 }

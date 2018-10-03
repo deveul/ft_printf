@@ -6,7 +6,7 @@
 /*   By: vrenaudi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 15:43:20 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/27 12:00:39 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/10/03 15:50:32 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct	s_list
 	struct s_list	*next;
 }				t_list;
 
+char			*ft_strjoinone(char *s1, char c);
 char			*ft_strrpcall(char *s, int c, int d);
 int				ft_bi_to_dec(char *bi);
 int				ft_power(int nb, int power);
@@ -63,6 +64,7 @@ void			*ft_memmove(void *dst, const void *src, size_t len);
 void			*ft_memset(void *b, int c, size_t len);
 char			*ft_strcat(char *s1, const char *s2);
 char			*ft_strchr(const char *s, int c);
+int				ft_strlct(const char *s, int c);
 char			*ft_strrpc(const char *s, int c, int d);
 char			*ft_strcpy(char *dst, const char *src);
 char			*ft_strdup(const char *s1);
@@ -106,7 +108,7 @@ void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr(int n);
 void			ft_putnbr_fd(int n, int fd);
 void			ft_putstr(char const *s);
-void			ft_putmemstr(char const *s, int n);
+void			ft_putmemstr(char *s, int n);
 void			ft_putwstr(wchar_t const *s, int len);
 void			ft_putstr_fd(char const *s, int fd);
 void			ft_strclr(char *s);

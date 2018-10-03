@@ -6,7 +6,7 @@
 /*   By: vrenaudi <vrenaudi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/28 15:58:16 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/27 17:56:32 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/10/03 10:52:17 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,23 @@ static char	*ft_conv_bzer(t_fmt para, int *cpt)
 
 	len = 1;
 	i = 0;
-	str = NULL;
 	if (para.width > 1)
 		len = para.width;
+	(*cpt) = len;
 	if ((str = ft_memalloc(len + 1)) == 0)
 		return (NULL);
-	if (para.options && ft_strchr(para.options, '-'))
+	if (para.minus == 1)
 	{
-		str[0] = '\0';
-		(*cpt)++;
 		i++;
 		while (1 < len--)
-		{
 			str[i++] = ' ';
-			(*cpt)++;
-		}
 	}
 	else
 	{
-		while (len-- > 1)
-		{
-			str[i++] = ' ';
-			(*cpt)++;
-		}
-		str[i] = '\0';
-		(*cpt)++;
+		if (para.zero == 1)
+			ft_memset(str, '0', (len - 1));
+		else
+			ft_memset(str, ' ', (len - 1));
 	}
 	return (str);
 }
@@ -54,24 +46,21 @@ char		*ft_conv_c(va_list ap, t_fmt para, int *cpt)
 	char	*arg;
 	int		argu;
 	int		len;
-	int		i;
 
 	argu = va_arg(ap, int);
 	arg = NULL;
 	if (argu == 0)
-	{
-		arg = ft_conv_bzer(para, cpt);
-		return (arg);
-	}
+		return (ft_conv_bzer(para, cpt));
 	len = 1;
 	if (para.width > 0)
 		len = para.width;
 	if ((arg = ft_memalloc(len + 1)) == 0)
 		return (NULL);
-	i = 0;
-	while (i < len)
-		arg[i++] = ' ';
-	if (para.options && ft_strchr(para.options, '-'))
+	if (para.zero == 1 && para.minus == 0)
+		ft_memset(arg, '0', len);
+	else
+		ft_memset(arg, ' ', len);
+	if (para.minus == 1)
 		arg[0] = argu;
 	else
 		arg[len - 1] = argu;

@@ -1,42 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoinfreesec.c                                :+:      :+:    :+:   */
+/*   ft_strnjoinone.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrenaudi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/02 10:52:16 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/10/02 17:08:13 by vrenaudi         ###   ########.fr       */
+/*   Created: 2018/04/11 17:08:06 by vrenaudi          #+#    #+#             */
+/*   Updated: 2018/10/02 17:36:41 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strjoinfreesec(char const *s1, char *s2)
+char	*ft_strjoinone(char *s1, char c)
 {
-	int		size;
-	char	*new;
-	int		i;
-	int		j;
+	char		*new;
+	size_t		i;
 
-	i = -1;
-	j = 0;
-	if (!s2)
-		return (NULL);
+	i = 0;
 	if (!s1)
-		return (ft_strdup(s2));
-	size = ft_strlen(s1) + ft_strlen(s2);
-	if ((new = malloc(sizeof(char) * (size + 1))) == 0)
-		return (NULL);
-	new[size] = '\0';
-	while (s1[++i])
-		new[i] = s1[i];
-	while (s2[j])
 	{
-		new[i] = s2[j];
-		i++;
-		j++;
+		if (!(new = ft_memalloc(2)))
+			return (NULL);
+		new[0] = 'c';
+		return (ft_strdup(&c));
 	}
-	ft_strdel(&s2);
+	if (!(new = ft_memalloc(ft_strlen(s1) + 1)))
+		return (NULL);
+	while (s1[i])
+	{
+		new[i] = s1[i];
+		i++;
+	}
+	new[i] = c;
+	ft_strdel(&s1);
 	return (new);
 }

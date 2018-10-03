@@ -6,13 +6,13 @@
 /*   By: vrenaudi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 16:09:51 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/26 18:40:56 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/10/03 14:16:09 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putmemstr(char const *s, int n)
+void	ft_putmemstr(char *s, int n)
 {
 	int		i;
 

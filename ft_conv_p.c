@@ -6,31 +6,68 @@
 /*   By: vrenaudi <vrenaudi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 17:26:50 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/06/28 16:47:34 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/10/03 18:34:37 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_conv_p(va_list ap, t_fmt para)
+static char	*ft_zerwithacy(t_fmt para)
 {
-	char		*str;
-	char		*tmp;
-	void		*arg;
-	int			len;
+	char	*str;
+
+	if (para.acy == 0)
+		return (ft_strdup("0x"));
+	str = ft_memalloc(para.acy + 1);
+	ft_memset(str, '0', para.acy);
+	str = ft_strjoinfreesec("0x", str);
+	return (str);
+}
+
+static char	*ft_get_arg(t_fmt para, uintmax_t arg)
+{
+	int		len;
+	int		save;
+	char	*str;
+	char	*tmp;
+
+	str = ft_uintmax_to_hex(arg, 'x');
+	len = ft_strlen(str);
+	save = len;
+	if (para.acy > len)
+		len = para.acy;
+	if ((tmp = ft_memalloc(len - save + 1)) == 0)
+		return (NULL);
+	ft_memset(tmp, '0', (len - save));
+	str = ft_strjoinfreeall(tmp, str);
+	str = ft_strjoinfreesec("0x", str);
+	return (str);
+}
+
+char		*ft_conv_p(va_list ap, t_fmt p)
+{
+	char	*str;
+	char	*tmp;
+	void	*arg;
+	int		len;
 
 	arg = va_arg(ap, void*);
-	len = ft_strlen(ft_uintmax_to_hex((uintmax_t)arg, 'x')) + 2;
-	if ((str = ft_memalloc(len + 1)) == 0)
+	if (p.acy != -1 && arg == 0)
+		return (ft_zerwithacy(p));
+	if (!(str = ft_get_arg(p, (uintmax_t)arg)))
 		return (NULL);
-	str = ft_strjoin("0x", ft_uintmax_to_hex((uintmax_t)arg, 'x'));
-	if (len > para.width)
+	len = ft_strlen(str);
+	if (len > p.width)
 		return (str);
-	if ((tmp = ft_memalloc(para.width - len + 1)) == 0)
+	if ((tmp = ft_memalloc(p.width - len + 1)) == 0)
 		return (NULL);
-	if (len < para.width && (!para.options
-			|| (para.options && !ft_strchr(para.options, '-'))))
-		return (ft_strjoinfree(ft_memset(tmp, ' ', (para.width - len)), str));
+	ft_memset(tmp, ' ', (p.width - len));
+	if (len < p.width && p.minus == 0)
+	{
+		if (p.zero == 1)
+			return (ft_strjoinfree(str, ft_memset(tmp, '0', (p.width - len))));
+		return (ft_strjoinfree(tmp, str));
+	}
 	else
-		return (ft_strjoinfree(str, ft_memset(tmp, ' ', (para.width - len))));
+		return (ft_strjoinfree(str, tmp));
 }

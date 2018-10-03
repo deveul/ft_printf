@@ -6,7 +6,7 @@
 /*   By: vrenaudi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 10:52:16 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/26 18:58:08 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/09/27 19:26:25 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,5 @@ char		*ft_memjoin(char *s1, const char *s2, int n1, int n2)
 	i = n1;
 	while (j < n2)
 		new[i++] = s2[j++];
-	ft_strdel(&s1);
 	return (new);
 }

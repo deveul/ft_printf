@@ -6,20 +6,24 @@
 /*   By: vrenaudi <vrenaudi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/14 10:19:37 by vrenaudi          #+#    #+#             */
-/*   Updated: 2018/09/24 19:09:57 by vrenaudi         ###   ########.fr       */
+/*   Updated: 2018/10/03 18:27:06 by vrenaudi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void			ft_init_fmt(t_fmt *current)
+static void		ft_check_flags(t_fmt *current, char c)
 {
-	current->options = NULL;
-	current->width = 0;
-	current->acy = -1;
-	current->size = NULL;
-	current->conv = 0;
-	current->len = 0;
+	if (c == '-')
+		current->minus = 1;
+	if (c == '+')
+		current->plus = 1;
+	if (c == '#')
+		current->hash = 1;
+	if (c == '0')
+		current->zero = 1;
+	if (c == ' ')
+		current->space = 1;
 }
 
 static void		ft_anal_arg3(t_fmt *current, int i, int save, char const *str)
@@ -27,6 +31,9 @@ static void		ft_anal_arg3(t_fmt *current, int i, int save, char const *str)
 	int		a;
 
 	a = 0;
+	while (str[i] && (str[i] == '-' || str[i] == '+' || str[i] == '#'
+				|| str[i] == '0' || str[i] == ' '))
+		ft_check_flags(current, str[i++]);
 	if (str[i] && (str[i] == 'h' || str[i] == 'l'
 				|| str[i] == 'j' || str[i] == 'z'))
 	{
@@ -39,12 +46,20 @@ static void		ft_anal_arg3(t_fmt *current, int i, int save, char const *str)
 		while (save < i)
 			current->size[a++] = str[save++];
 	}
-	current->conv = str[i++];
+	while (str[i] && ft_strchr("-+#0 ", str[i]))
+		ft_check_flags(current, str[i++]);
+	if (str[i])
+		current->conv = str[i++];
+	else
+		current->conv = -1;
 	current->len = (i);
 }
 
-static void		ft_anal_arg2(t_fmt *current, int i, int save, char const *str)
+static void		ft_anal_arg2(t_fmt *current, int i, char const *str)
 {
+	int		save;
+
+	save = 0;
 	if (str[i] && str[i] >= '0' && str[i] <= '9')
 	{
 		save = i;
@@ -52,9 +67,14 @@ static void		ft_anal_arg2(t_fmt *current, int i, int save, char const *str)
 			i++;
 		current->width = ft_atoi(str + save);
 	}
+	while (str[i] && (str[i] == '-' || str[i] == '+' || str[i] == '#'
+				|| str[i] == '0' || str[i] == ' '))
+		ft_check_flags(current, str[i++]);
 	if (str[i] && str[i] == '.')
 	{
 		i++;
+		while (str[i] && str[i] == '.')
+			i++;
 		current->acy = 0;
 		if (str[i] && str[i] >= '0' && str[i] <= '9')
 			current->acy = ft_atoi(str + i);
@@ -69,19 +89,13 @@ t_fmt			ft_analyze_arg(const char *str)
 	t_fmt	current;
 	int		i;
 	int		a;
-	int		save;
 
 	ft_init_fmt(&current);
 	a = 0;
 	i = 0;
-	save = 0;
 	while (str[i] && (str[i] == '-' || str[i] == '+' || str[i] == '#'
 				|| str[i] == '0' || str[i] == ' '))
-		i++;
-	if (i != 0)
-		current.options = ft_memalloc(i + 1);
-	while (save < i)
-		current.options[a++] = str[save++];
-	ft_anal_arg2(&current, i, save, str);
+		ft_check_flags(&current, str[i++]);
+	ft_anal_arg2(&current, i, str);
 	return (current);
 }
